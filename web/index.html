@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MailFlow NLP</title>
+    <link rel="stylesheet" href="/web/style.css">
+</head>
+
+<body>
+
+    <aside>
+        <div class="brand">
+            MAILFLOW <span>NLP</span>
+        </div>
+
+        <nav>
+            <a class="active" href="#overview">Tổng quan</a>
+            <a href="#review">
+                Kiểm duyệt <b id="reviewCount">0</b>
+            </a>
+            <a href="#inbox">Hàng đợi</a>
+            <a href="#experiments">Thực nghiệm</a>
+        </nav>
+
+        <div class="user">
+            Quản trị viên<br>
+            <small>Demo workspace</small>
+        </div>
+    </aside>
+
+    <main>
+
+        <header>
+            <div>
+                <p class="eyebrow">Vận hành định tuyến</p>
+                <h1>Trung tâm email khách hàng</h1>
+            </div>
+
+            <button id="openModal">Nạp email</button>
+        </header>
+
+        <section id="overview">
+
+            <div class="metrics">
+
+                <article>
+                    <small>Tổng email</small>
+                    <strong id="total">—</strong>
+                </article>
+
+                <article>
+                    <small>Tự động định tuyến</small>
+                    <strong id="auto">—</strong>
+                </article>
+
+                <article>
+                    <small>Cần kiểm duyệt</small>
+                    <strong id="reviewMetric">—</strong>
+                </article>
+
+                <article>
+                    <small>Tỷ lệ hiệu chỉnh</small>
+                    <strong id="correction">—</strong>
+                </article>
+
+            </div>
+
+            <div class="grid">
+
+                <section class="panel">
+
+                    <div class="panelhead">
+                        <h2>Phân bố hàng đợi</h2>
+                        <span>Ngưỡng tự động: 80%</span>
+                    </div>
+
+                    <div id="distribution" class="bars"></div>
+
+                </section>
+
+                <section class="panel">
+
+                    <div class="panelhead">
+                        <h2>Luồng xử lý</h2>
+                        <span class="live">Dữ liệu demo</span>
+                    </div>
+
+                    <ol class="flow">
+                        <li>Nạp và chuẩn hóa nội dung</li>
+                        <li>Dự đoán nhãn với mô hình triển khai</li>
+                        <li>Định tuyến hoặc đưa vào kiểm duyệt</li>
+                    </ol>
+
+                </section>
+
+            </div>
+
+        </section>
+
+        <section id="review" class="panel">
+
+            <div class="panelhead">
+                <h2>Hàng đợi cần kiểm duyệt</h2>
+                <span>Sắp xếp theo độ tin cậy tăng dần</span>
+            </div>
+
+            <div class="tablewrap">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Dự đoán</th>
+                            <th>Độ tin cậy</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="reviewRows"></tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+        <section id="inbox" class="panel">
+
+            <div class="panelhead">
+                <h2>Tất cả email</h2>
+
+                <select id="statusFilter">
+                    <option value="">Mọi trạng thái</option>
+                    <option value="new">Mới</option>
+                    <option value="in_progress">Đang xử lý</option>
+                    <option value="resolved">Đã xử lý</option>
+                </select>
+            </div>
+
+            <div class="tablewrap">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Người gửi</th>
+                            <th>Phòng ban</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="emailRows"></tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+        <section id="experiments" class="panel">
+
+            <div class="panelhead">
+                <h2>So sánh mô hình</h2>
+                <span>Dataset demo · seed 42</span>
+            </div>
+
+            <div class="tablewrap">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Mô hình</th>
+                            <th>F1-macro</th>
+                            <th>Accuracy</th>
+                            <th>Seed</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="experimentRows"></tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <dialog id="modal">
+
+        <form id="emailForm" method="dialog">
+
+            <div class="panelhead">
+                <h2>Nạp email mô phỏng</h2>
+                <button type="button" class="ghost" id="closeModal">
+                    Đóng
+                </button>
+            </div>
+
+            <label>
+                Tiêu đề
+                <input
+                    required
+                    name="subject"
+                    placeholder="Ví dụ: Không đăng nhập được"
+                >
+            </label>
+
+            <label>
+                Người gửi
+                <input
+                    required
+                    name="sender"
+                    type="email"
+                    placeholder="khachhang@example.com"
+                >
+            </label>
+
+            <label>
+                Nội dung
+                <textarea
+                    name="body"
+                    placeholder="Nội dung email..."
+                ></textarea>
+            </label>
+
+            <button type="submit">
+                Phân loại và định tuyến
+            </button>
+
+            <p id="formMessage" role="status"></p>
+
+        </form>
+
+    </dialog>
+
+    <script src="/web/app.js"></script>
+
+</body>
+
+</html>

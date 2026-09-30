@@ -1,0 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@500;600&family=Fira+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg: #0f172a;
+    --card: #111827;
+    --muted: #1e293b;
+    --border: #334155;
+    --text: #f8fafc;
+    --sub: #cbd5e1;
+    --green: #22c55e;
+    --red: #dc2626;
+    --amber: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.5 'Fira Sans', sans-serif;
+}
+
+aside {
+    position: fixed;
+    width: 250px;
+    height: 100vh;
+    padding: 28px 16px;
+    background: #0b1120;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    font: 600 20px 'Fira Code';
+    letter-spacing: .03em;
+    padding: 8px 12px;
+}
+
+.brand span {
+    color: var(--green);
+}
+
+nav {
+    margin-top: 40px;
+    display: grid;
+    gap: 6px;
+}
+
+nav a {
+    color: var(--sub);
+    text-decoration: none;
+    padding: 12px;
+    border-radius: 8px;
+    transition: .18s;
+    background: transparent;
+}
+
+nav a:hover,
+nav .active {
+    background: var(--muted);
+    color: var(--text);
+}
+
+nav b {
+    float: right;
+    color: var(--amber);
+}
+
+.user {
+    margin-top: auto;
+    padding: 14px 12px;
+    background: var(--muted);
+    border-radius: 8px;
+}
+
+.user small,
+.eyebrow,
+small {
+    color: var(--sub);
+}
+
+main {
+    max-width: 1480px;
+    margin-left: 250px;
+    padding: 32px;
+}
+
+header,
+.panelhead {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+
+h1 {
+    font-size: 30px;
+    margin: 0;
+}
+
+.eyebrow {
+    font: 500 12px 'Fira Code';
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 0 0 5px;
+}
+
+button {
+    cursor: pointer;
+    border: 0;
+    border-radius: 7px;
+    padding: 11px 16px;
+    background: var(--green);
+    color: #07130a;
+    font-weight: 700;
+    font-size: 14px;
+    transition: opacity .18s;
+}
+
+button:hover {
+    opacity: .82;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--green);
+    outline-offset: 2px;
+}
+
+.ghost {
+    background: var(--muted);
+    color: var(--text);
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 30px 0;
+}
+
+.metrics article,
+.panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.metrics article {
+    padding: 20px;
+}
+
+.metrics strong {
+    display: block;
+    margin-top: 7px;
+    font: 600 30px 'Fira Code';
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+}
+
+.panel {
+    padding: 20px;
+    margin-top: 16px;
+}
+
+h2 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.panelhead span {
+    font-size: 13px;
+    color: var(--sub);
+}
+
+.live {
+    color: var(--green) !important;
+}
+
+.bars {
+    display: grid;
+    gap: 13px;
+    margin-top: 20px;
+}
+
+.barrow {
+    display: grid;
+    grid-template-columns: 155px 1fr 38px;
+    align-items: center;
+    gap: 12px;
+}
+
+.track {
+    height: 10px;
+    background: var(--muted);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.fill {
+    height: 100%;
+    background: var(--green);
+    border-radius: 10px;
+}
+
+.flow {
+    padding-left: 22px;
+    color: var(--sub);
+}
+
+.flow li {
+    padding: 10px 0;
+}
+
+.tablewrap {
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    min-width: 620px;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 13px 10px;
+    border-top: 1px solid var(--border);
+}
+
+th {
+    font: 500 12px 'Fira Code';
+    color: var(--sub);
+    text-transform: uppercase;
+}
+
+td small {
+    display: block;
+}
+
+.badge {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 3px 9px;
+    font-size: 12px;
+    background: var(--muted);
+}
+
+.confidence.low {
+    color: #fecaca;
+}
+
+.confidence.high {
+    color: #bbf7d0;
+}
+
+select,
+input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #0b1120;
+    color: var(--text);
+    font: inherit;
+}
+
+dialog {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    max-width: 550px;
+    width: calc(100% - 32px);
+}
+
+dialog::backdrop {
+    background: #020617cc;
+}
+
+dialog form {
+    display: grid;
+    gap: 15px;
+}
+
+label {
+    display: grid;
+    gap: 6px;
+    font-weight: 600;
+}
+
+textarea {
+    min-height: 125px;
+    resize: vertical;
+}
+
+#formMessage {
+    margin: 0;
+    color: #bbf7d0;
+}
+
+@media (max-width: 900px) {
+    aside {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 14px;
+        display: block;
+    }
+
+    .brand {
+        display: inline-block;
+    }
+
+    nav {
+        margin: 14px 0;
+        display: flex;
+        overflow: auto;
+    }
+
+    .user {
+        display: none;
+    }
+
+    main {
+        margin: 0;
+        padding: 20px;
+    }
+
+    .metrics,
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 560px) {
+
+    header,
+    .panelhead {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .metrics,
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .barrow {
+        grid-template-columns: 125px 1fr 28px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}
