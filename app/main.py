@@ -32,9 +32,12 @@ KEYWORDS = {
 }
 
 class IncomingEmail(BaseModel):
-    subject: str = Field(min_length=1, max_length=500)
-    body: str = Field(default="", max_length=20000)
-    sender: str = Field(min_length=3, max_length=255)
+    subject: str | None = Field(default="", max_length=500)
+    body: str | None = Field(default="", max_length=20000)
+    text: str | None = Field(default=None, max_length=20000)
+    sender: str | None = Field(default="system@customer.example", max_length=255)
+    source: str | None = Field(default=None, max_length=255)
+    label: str | None = None
     received_at: datetime | None = None
 
 class Review(BaseModel):
@@ -64,7 +67,27 @@ def preprocess(subject: str, body: str) -> str:
     text = re.split(r"(?:^|\n)(?:--|On .+wrote:|Từ:)", text, maxsplit=1)[0]
     return re.sub(r"\s+", " ", unicodedata.normalize("NFC", text)).strip()
 
+from app.nlp.preprocessor import preprocess_vietnamese_text
+from app.nlp.predictor import get_predictor
+
+DEPARTMENTS = {
+    "customer_service": "Chăm sóc khách hàng",
+    "card_account": "Thẻ & Tài khoản",
+    "digital_banking": "Ngân hàng số",
+    "credit_savings": "Tín dụng & Tiết kiệm",
+    "payment_transfer": "Thanh toán & Chuyển tiền",
+    "needs_review": "Cần kiểm duyệt",
+    "sales": "Kinh doanh", "technical": "Kỹ thuật",
+    "finance_accounting": "Kế toán / Tài chính", "human_resources": "Nhân sự"
+}
+
 def predict(text: str) -> tuple[str, float]:
+    """Dự đoán lĩnh vực sử dụng mô hình TF-IDF + SVM hoặc Keyword fallback."""
+    predictor = get_predictor()
+    if predictor.is_ready():
+        res = predictor.predict_topic(text)
+        return res["topic"], res["confidence"]
+
     lowered = text.lower()
     scores = {d: sum(word in lowered for word in words) for d, words in KEYWORDS.items()}
     best = max(scores, key=scores.get)
@@ -107,13 +130,16 @@ def initialize():
                 create_email(con, IncomingEmail(subject=subject, body=body, sender=sender), None)
 
 def create_email(con: sqlite3.Connection, item: IncomingEmail, key: str | None) -> dict:
+    subject_val = item.subject or (item.text[:50] if item.text else "Phản hồi khách hàng")
+    body_val = item.body or item.text or ""
+    sender_val = item.source or item.sender or "khachhang@example.com"
     received = (item.received_at or datetime.now(timezone.utc)).isoformat()
-    text = preprocess(item.subject, item.body)
+    text = preprocess(subject_val, body_val)
     department, confidence = predict(text)
     routed = department if confidence >= 0.80 else None
     decision = "auto_routed" if routed else "needs_review"
     cursor = con.execute("""INSERT INTO emails(subject,body,sender,received_at,processed_text,predicted_department,confidence,model_version,route_department,status,decision,idempotency_key,created_at)
-      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""", (item.subject, item.body, item.sender, received, text, department, confidence, "keyword-baseline-v1", routed, "new", decision, key, now()))
+      VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)""", (subject_val, body_val, sender_val, received, text, department, confidence, "keyword-baseline-v1", routed, "new", decision, key, now()))
     email_id = cursor.lastrowid
     audit(con, email_id, "ingested", "Nạp email qua API")
     audit(con, email_id, "predicted", f"{department} ({confidence:.0%})")
@@ -173,9 +199,16 @@ def bulk_import(items: list[IncomingEmail]):
 def import_csv(content: str = Body(..., media_type="text/csv")):
     """Import UTF-8 CSV while preserving valid rows when individual rows fail."""
     reader = csv.DictReader(io.StringIO(content))
-    expected = {"subject", "body", "sender", "received_at"}
-    if not reader.fieldnames or not {"subject", "body", "sender"}.issubset(reader.fieldnames):
-        raise HTTPException(422, "CSV cần các cột subject, body, sender và received_at")
+    if not reader.fieldnames:
+        raise HTTPException(422, "Tệp CSV rỗng hoặc không hợp lệ")
+    
+    fields = set(reader.fieldnames)
+    has_email_fields = {"subject", "body", "sender"}.issubset(fields)
+    has_feedback_fields = "text" in fields
+    
+    if not (has_email_fields or has_feedback_fields):
+        raise HTTPException(422, "CSV cần chứa các cột (subject, body, sender) hoặc cột (text)")
+        
     created, errors = [], []
     with db() as con:
         for line, record in enumerate(reader, 2):
