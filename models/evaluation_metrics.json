@@ -1,0 +1,182 @@
+{
+  "topic_classification": {
+    "task_name": "topic_classification",
+    "accuracy": 0.841,
+    "precision_macro": 0.7536,
+    "recall_macro": 0.6049,
+    "f1_macro": 0.654,
+    "mean_confidence": 0.8008,
+    "classes": [
+      "card_account",
+      "credit_savings",
+      "customer_service",
+      "digital_banking",
+      "needs_review",
+      "payment_transfer"
+    ],
+    "confusion_matrix": [
+      [
+        9,
+        0,
+        8,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        16,
+        7,
+        0,
+        0,
+        2
+      ],
+      [
+        1,
+        2,
+        219,
+        3,
+        5,
+        0
+      ],
+      [
+        0,
+        2,
+        5,
+        6,
+        3,
+        0
+      ],
+      [
+        2,
+        2,
+        22,
+        0,
+        147,
+        0
+      ],
+      [
+        0,
+        3,
+        6,
+        0,
+        2,
+        5
+      ]
+    ],
+    "report": {
+      "card_account": {
+        "precision": 0.75,
+        "recall": 0.5,
+        "f1-score": 0.6,
+        "support": 18.0
+      },
+      "credit_savings": {
+        "precision": 0.64,
+        "recall": 0.64,
+        "f1-score": 0.64,
+        "support": 25.0
+      },
+      "customer_service": {
+        "precision": 0.8202247191011236,
+        "recall": 0.9521739130434783,
+        "f1-score": 0.8812877263581489,
+        "support": 230.0
+      },
+      "digital_banking": {
+        "precision": 0.6666666666666666,
+        "recall": 0.375,
+        "f1-score": 0.48,
+        "support": 16.0
+      },
+      "needs_review": {
+        "precision": 0.930379746835443,
+        "recall": 0.8497109826589595,
+        "f1-score": 0.8882175226586103,
+        "support": 173.0
+      },
+      "payment_transfer": {
+        "precision": 0.7142857142857143,
+        "recall": 0.3125,
+        "f1-score": 0.43478260869565216,
+        "support": 16.0
+      },
+      "accuracy": 0.8410041841004184,
+      "macro avg": {
+        "precision": 0.7535928078148246,
+        "recall": 0.604897482617073,
+        "f1-score": 0.6540479762854019,
+        "support": 478.0
+      },
+      "weighted avg": {
+        "precision": 0.839336024458218,
+        "recall": 0.8410041841004184,
+        "f1-score": 0.8322057117603435,
+        "support": 478.0
+      }
+    }
+  },
+  "sentiment_analysis": {
+    "task_name": "sentiment_analysis",
+    "accuracy": 0.9414,
+    "precision_macro": 0.622,
+    "recall_macro": 0.6353,
+    "f1_macro": 0.6284,
+    "mean_confidence": 0.9544,
+    "classes": [
+      "negative",
+      "neutral",
+      "positive"
+    ],
+    "confusion_matrix": [
+      [
+        157,
+        0,
+        8
+      ],
+      [
+        3,
+        0,
+        3
+      ],
+      [
+        14,
+        0,
+        293
+      ]
+    ],
+    "report": {
+      "negative": {
+        "precision": 0.9022988505747126,
+        "recall": 0.9515151515151515,
+        "f1-score": 0.9262536873156342,
+        "support": 165.0
+      },
+      "neutral": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1-score": 0.0,
+        "support": 6.0
+      },
+      "positive": {
+        "precision": 0.9638157894736842,
+        "recall": 0.9543973941368078,
+        "f1-score": 0.9590834697217676,
+        "support": 307.0
+      },
+      "accuracy": 0.9414225941422594,
+      "macro avg": {
+        "precision": 0.6220382133494656,
+        "recall": 0.6353041818839865,
+        "f1-score": 0.6284457190124673,
+        "support": 478.0
+      },
+      "weighted avg": {
+        "precision": 0.9304827567222774,
+        "recall": 0.9414225941422594,
+        "f1-score": 0.9357123088110089,
+        "support": 478.0
+      }
+    }
+  }
+}
